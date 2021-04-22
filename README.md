@@ -11,7 +11,7 @@ remotes::install_github("moritzlindner/ggped")
 
 ## Description
 
-This Package contains a set of functions and geoms to draw pedigree charts from pedigree data created with \link[kinship2:pedigree]{kinship2}. 
+This Package contains a set of functions and geoms to draw pedigree charts from pedigree data created with kinship2. 
 
 ## Examples
 
@@ -36,16 +36,5 @@ cartesian+
   scale_y_reverse(expand=expansion(add = 1))+
   coord_polar()
 
-
-
-
-```
-### Example 2:
-
-```{r Example2, eval=FALSE, include=T}
-
-sangergenotype(dir="D:\\", link="http://www.x.zip",wtseq="ACTGAAAA",mutseq="ACCGAAAA", revcomp = TRUE, cutoff = 0.2)
-as.data.frame(tmp)
-```
 
 Developed by [Moritz Lindner](http://lindnerlab.de)
