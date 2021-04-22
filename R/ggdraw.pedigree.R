@@ -10,7 +10,7 @@
 #' @param column.names If \var{dat} is a data frame, then column name definitions. standart are those created by \link{dfalign.pedigree}.
 #' @inheritParams kinship2::align.pedigree 
 #' @param col.palette Palette to use for text features.
-#' @col.lables Font Colour for subject labels
+#' @param col.lables Font colour for subject labels. Per default, sets *wt* to black, *het* to first colour of palette and *hom* to the second colour of the palette. Accepts any arguments that is understood by the parameter *values* of \link{ggplot2:scale_colour_manual}.
 #' @param col.tree Line colour for tree.
 #' @param col.double Line colour for lines between repeatedly plotted subjects.
 #' @inheritParams kinship2::kinship
@@ -41,16 +41,16 @@ ggdraw.pedigree<-function(dat=NULL,
                                     fcenterpoint="fcenterpoint",
                                     sex="sex"
                           ),
-                          col.palette=suppressWarnings(brewer.pal(2,"Set2")),
+                          col.palette=suppressWarnings(brewer.pal(length(unique(dat[,features.as.lables])),"Set2")),
                           col.lables=c("wt/wt"="black",
-                                                    "wt"="black",
-                                                    "+/+"="black",
-                                                    "wt/mut"=col.palette[1],
-                                                    "het"=col.palette[1],
-                                                    "+/-"=col.palette[1],
-                                                    "mut/mut"=col.palette[2],
-                                                    "hom"=col.palette[2],
-                                                    "-/-"=col.palette[2]),
+                                       "wt"="black",
+                                       "+/+"="black",
+                                       "wt/mut"=col.palette[1],
+                                       "het"=col.palette[1],
+                                       "+/-"=col.palette[1],
+                                       "mut/mut"=col.palette[2],
+                                       "hom"=col.palette[2],
+                                       "-/-"=col.palette[2]),
                           col.tree="#000000",
                           col.double="#808080", 
                           chrtype="autosome",
