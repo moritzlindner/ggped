@@ -1,10 +1,10 @@
 #' Scale constructors
 #' 
 #' Discrete scale constructors for \link{geom_pedigreepoint}
-#' @param ... Additional parameters passed on to \link{ggplot2:::discrete_scale}.
+#' @param ... Additional parameters passed on to \link{ggplot2:discrete_scale}.
 #' @inheritParams ggplot2::scale_shape_manual
 #' @param na.value What aesthetic value should the missing values be displayed as?
-#' @param set  A palette name from the lists in \link{RColorBrewer::brewer.pal}.
+#' @param set  A palette name from the lists in \link{RColorBrewer:brewer.pal}.
 #' @param main.feature.black Should the main (first) feature always be displayed as black?
 #' @param name Legend title.
 #' @name Scales
@@ -19,7 +19,7 @@ scale_feature.name_discrete<-function(...,
                                       na.value = "grey50",
                                       main.feature.black=TRUE,
                                       name="Features") {
-  ggplot2:::discrete_scale(
+  discrete_scale(
     aesthetics = "feature.name", 
     scale_name = "feature.name_d", 
     palette = function(x){

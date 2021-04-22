@@ -55,9 +55,9 @@ scale_isdead(
 )
 }
 \arguments{
-\item{...}{Additional parameters passed on to \link{ggplot2:::discrete_scale}.}
+\item{...}{Additional parameters passed on to \link{ggplot2:discrete_scale}.}
 
-\item{set}{A palette name from the lists in \link{RColorBrewer::brewer.pal}.}
+\item{set}{A palette name from the lists in \link{RColorBrewer:brewer.pal}.}
 
 \item{na.value}{What aesthetic value should the missing values be displayed as?}
 
