@@ -33,7 +33,7 @@ dfalign.pedigree<-function(ped, chrtype="autosome",packed=TRUE, width=10, align=
   
   ckall <- ped$id[is.na(match(ped$id, ped$id[struct$nid[struct$nid!=0]]))]
   if (length(ckall > 0)) 
-    cat("Did not include the following subject:", ckall, ".\n Reason: No evidence for relation to other subjects in the tree.\n")
+    message("Did not include the following subject:", ckall, ".\n Reason: No evidence for relation to other subjects in the tree.\n")
   nvalid<-length(struct$nid[struct$nid!=0]) #length(ped$id[!is.na(match(ped$id, ped$id[struct$nid[struct$nid!=0]]))])
   out<-data.frame(ID=numeric(nvalid),
                   Name=numeric(nvalid),

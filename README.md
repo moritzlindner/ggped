@@ -1,7 +1,14 @@
+---
+title: "ggped"
+output: html_document
+---
+
 # ggped
+
 Draws pedigrees using ggplot and kinship2
 
 ## Installation
+
 ```{r}
 if (!requireNamespace("remotes", quietly = TRUE)){
   install.packages("remotes")
@@ -11,13 +18,14 @@ remotes::install_github("moritzlindner/ggped")
 
 ## Description
 
-This Package contains a set of functions and geoms to draw pedigree charts from pedigree data created with kinship2. 
+This Package contains a set of functions and geoms to draw pedigree charts from pedigree data created with kinship2.
 
 ## Examples
 
 ### Example 1:
 
-```{r Example1, eval=TRUE, include=T}
+```{r Example1, eval=TRUE, include=TRUE}
+require(ggped)
 data(minnbreast)
 
 bpeds <- with(minnbreast,
@@ -31,10 +39,12 @@ df<-dfalign.pedigree(bped.id8)
 
 cartesian<-ggdraw.pedigree(dat=df,features = c("affected"))
 
+cartesian
+
 cartesian+
   scale_x_continuous(expand=expansion(add = 0.25))+
   scale_y_reverse(expand=expansion(add = 1))+
   coord_polar()
-
+```
 
 Developed by [Moritz Lindner](http://lindnerlab.de)
