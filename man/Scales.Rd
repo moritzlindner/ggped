@@ -42,22 +42,22 @@ scale_sex(
 
 scale_isdead_discrete(
   ...,
-  values = c(0, 0, 47, 47, 63, 63, 63),
+  values = c(0, 0, 47, 47, 43, 63, 63),
   breaks = c("0", FALSE, "1", TRUE, "2", "Unknown", "NA"),
   name = "Status"
 )
 
 scale_isdead(
   ...,
-  values = c(0, 0, 47, 47, 63, 63, 63),
+  values = c(0, 0, 47, 47, 43, 63, 63),
   breaks = c("0", FALSE, "1", TRUE, "2", "Unknown", "NA"),
   name = "Status"
 )
 }
 \arguments{
-\item{...}{Additional parameters passed on to \link{ggplot2:discrete_scale}.}
+\item{...}{Additional parameters passed on to \link[ggplot2]{discrete_scale}.}
 
-\item{set}{A palette name from the lists in \link{RColorBrewer:brewer.pal}.}
+\item{set}{A palette name from the lists in \link[RColorBrewer]{brewer.pal}.}
 
 \item{na.value}{What aesthetic value should the missing values be displayed as?}
 

@@ -1,6 +1,6 @@
 #' features_to_long
 #' 
-#' Convenience wrapper function for \link{tidyr::pivot_longer} to to pivot a data.frame with one column per feature into its long form.
+#' Convenience wrapper function for \link[tidyr]{pivot_longer} to to pivot a data.frame with one column per feature into its long form.
 #' 
 #' @param df data.frame
 #' @param features vector containing column names storing features, 

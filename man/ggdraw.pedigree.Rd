@@ -10,8 +10,10 @@ ggdraw.pedigree(
   features.as.lables = NULL,
   plot.names = T,
   plot.kinship.label = T,
-  column.names = list(x = "x", y = "y", Name = "Name", mcenterpoint = "mcenterpoint",
-    fcenterpoint = "fcenterpoint", sex = "sex"),
+  column.names = list(x = "x", y = "y", Name = "Name", mate.id = "mate.id", twin.id =
+    "twin.id", mate.centerpoint = "mate.centerpoint", family.centerpoint =
+    "family.centerpoint", twin.centerpoint = "twin.centerpoint", sex = "sex", adopted =
+    "adopted", pregnancy = "pregnancy"),
   col.palette = suppressWarnings(brewer.pal(length(unique(dat[, features.as.lables])),
     "Set2")),
   col.lables = c(`wt/wt` = "black", wt = "black", `+/+` = "black", `wt/mut` =
@@ -27,7 +29,7 @@ ggdraw.pedigree(
 )
 }
 \arguments{
-\item{dat}{A pedigree as returned by \link{kinship2::pedigree} or data frame in the format as returned by \link{dfalign.pedigree}.}
+\item{dat}{A pedigree as returned by \link[kinship2]{pedigree} or data frame in the format as returned by \link{dfalign.pedigree}.}
 
 \item{features}{Names of columns containing binary features (e.g. affected status) in \var{dat}.}
 
@@ -37,11 +39,11 @@ ggdraw.pedigree(
 
 \item{plot.kinship.label}{Whether to calculate and plot degree of kinship for inbred matings.}
 
-\item{column.names}{If \var{dat} is a data frame, then column name definitions. standart are those created by \link{dfalign.pedigree}.}
+\item{column.names}{If \var{dat} is a data frame, then column name definitions. Standard are those created by \link{dfalign.pedigree}. \var{adopted} and \var{pregancy} are additional optional logical columns.}
 
 \item{col.palette}{Palette to use for text features.}
 
-\item{col.lables}{Font colour for subject labels. Per default, sets *wt* to black, *het* to first colour of palette and *hom* to the second colour of the palette. Accepts any arguments that is understood by the parameter *values* of \link{ggplot2:scale_colour_manual}.}
+\item{col.lables}{Font colour for subject labels. Per default, sets *wt* to black, *het* to first colour of palette and *hom* to the second colour of the palette. Accepts any arguments that is understood by the parameter *values* of \link[ggplot2]{scale_colour_manual}.}
 
 \item{col.tree}{Line colour for tree.}
 

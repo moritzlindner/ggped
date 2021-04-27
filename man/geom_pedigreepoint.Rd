@@ -52,6 +52,10 @@ to the paired geom/stat.}
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
 
+\item{na.colour}{\strong{Colour to fill symbols with if feature is \code{NA}}.}
+
+\item{size}{\strong{Symbol size}.}
+
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
@@ -62,19 +66,10 @@ display.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
-
-\item{\strong{na.colour}}{Colour to fill symbols with if feature is \code{NA}.}
-
-\item{\strong{size}}{Symbol size.}
 }
 \description{
 The pedigreepoint geom is used to create the symbols on a pedigree chart representing individuals. Points are shaped by gender, can be marked as deceased and tagged with multiple colours.
 }
-\section{Functions}{
-\itemize{
-\item \code{geom_pedigreepoint}: 
-}}
-
 \section{Aesthetics}{
 
 \code{geom_pedigreepoint()} understands the following aesthetics (required aesthetics are in bold - data type is critical for correct plotting):
@@ -82,11 +77,13 @@ The pedigreepoint geom is used to create the symbols on a pedigree chart represe
  \item \strong{x} Coordinate. Numeric.
  \item \strong{y} Coordinate. Numeric.
  \item \strong{sex} Gender. Factor. 1 or M is Male, 2 or F is Female
- \item \strong{isdead} Status. Factor or Logical. 0 or FALSE is Alive, 1 or TRUE is Dead, all others are Unknown.
+ \item \strong{isdead} Factor or Logical. 0 or FALSE is Alive, 1 or TRUE is Dead. If factor, 2 is Stillbirth or Miscarriage. All others are Unknown.
  \item feature.name Features to plot.
  \item feature.value Corresponding status of feature.
+ \item adopted Logical. Depicted as brackets around symbol.
+ \item pregnancy Logical. Depicted as P in symbol.
  \item colour Stroke colour. Default: "black".
- \item alpha  Symbol alpha. Default: 1.
+ \item alpha Symbol alpha. Default: 1.
  \item stroke Stroke thickness.
 }
 }

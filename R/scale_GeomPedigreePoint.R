@@ -1,10 +1,10 @@
 #' Scale constructors
 #' 
 #' Discrete scale constructors for \link{geom_pedigreepoint}
-#' @param ... Additional parameters passed on to \link{ggplot2:discrete_scale}.
+#' @param ... Additional parameters passed on to \link[ggplot2]{discrete_scale}.
 #' @inheritParams ggplot2::scale_shape_manual
 #' @param na.value What aesthetic value should the missing values be displayed as?
-#' @param set  A palette name from the lists in \link{RColorBrewer:brewer.pal}.
+#' @param set  A palette name from the lists in \link[RColorBrewer]{brewer.pal}.
 #' @param main.feature.black Should the main (first) feature always be displayed as black?
 #' @param name Legend title.
 #' @name Scales
@@ -74,7 +74,7 @@ scale_sex<-scale_sex_discrete
 #' @describeIn Scales Scale constructor for the \var{isdead} argument.
 #' @importFrom utils getFromNamespace
 #' @export  
-scale_isdead_discrete<-function (..., values=c(0,0,47,47,63,63,63),
+scale_isdead_discrete<-function (..., values=c(0,0,47,47,43,63,63),
                                  breaks = c("0",FALSE,"1",TRUE,"2","Unknown","NA"),
                                  name="Status") 
 {
@@ -87,7 +87,8 @@ scale_isdead_discrete<-function (..., values=c(0,0,47,47,63,63,63),
                  levels(x)[levels(x)==0] <- "Alive"
                  levels(x)[levels(x)=="TRUE"] <- "Dead"
                  levels(x)[levels(x)==1] <- "Dead"
-                 levels(x)[!(levels(x) %in% c("Alive","Dead"))] <- "Unknown"
+                 levels(x)[levels(x)==2] <- "Stillbirth/Miscarriage"
+                 levels(x)[!(levels(x) %in% c("Alive","Dead","Stillbirth/Miscarriage"))] <- "Unknown"
                  x
                },values = values,
                breaks = breaks, ...)
