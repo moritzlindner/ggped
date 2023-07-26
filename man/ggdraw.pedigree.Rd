@@ -2,7 +2,7 @@
 % Please edit documentation in R/ggdraw.pedigree.R
 \name{ggdraw.pedigree}
 \alias{ggdraw.pedigree}
-\title{ggdraw.pedigree}
+\title{Plot Pedigree Using ggplot2}
 \usage{
 ggdraw.pedigree(
   dat = NULL,
@@ -29,7 +29,7 @@ ggdraw.pedigree(
 )
 }
 \arguments{
-\item{dat}{A pedigree as returned by \link[kinship2]{pedigree} or data frame in the format as returned by \link{dfalign.pedigree}.}
+\item{dat}{A pedigree object as returned by \link[kinship2]{pedigree} or data frame in the format as returned by \link{dfalign.pedigree}.}
 
 \item{features}{Names of columns containing binary features (e.g. affected status) in \var{dat}.}
 
@@ -73,7 +73,7 @@ for a packed output, the minimum width
 A ggplot object containing the pedigree
 }
 \description{
-Draws a pedigree using ggplot
+This function generates a pedigree plot using ggplot2.
 }
 \examples{
 data(minnbreast)

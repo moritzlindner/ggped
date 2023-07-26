@@ -7,9 +7,9 @@
 split_by_feature(vector, features, factor)
 }
 \arguments{
-\item{vector}{A vector containing data for drawing GeomPedigreePoint}
+\item{vector}{A vector containing data for drawing GeomPedigreePoint.}
 
-\item{features}{Features to split along}
+\item{features}{Character vector of feature names used to split the vector.}
 
 \item{factor}{A scale factor (i.e. desired point size)}
 }

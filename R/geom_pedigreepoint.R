@@ -52,14 +52,19 @@ GeomPedigreePoint <- ggproto(
     isdead = 0
   ),
   setup_data = function(data, param) {
-    if (class(data$sex) != "factor") {
-      stop("Sex is not of class factor.")
+    # Check if 'sex' is a factor
+    if (!is.factor(data$sex)) {
+      stop("The 'sex' column must be of class 'factor'.")
     }
-    if (!(class(data$isdead) %in% c("factor", "logical"))) {
-      stop("isdead is not of class factor or logical.")
+    
+    # Check if 'isdead' is either a factor or a logical vector
+    if (!is.factor(data$isdead) && !is.logical(data$isdead)) {
+      stop("The 'isdead' column must be of class 'factor' or 'logical'.")
     }
-    if (class(data$feature.value) != "logical") {
-      stop("feature.value is not of class logical")
+    
+    # Check if 'feature.value' is a logical vector
+    if (!is.logical(data$feature.value)) {
+      stop("The 'feature.value' column must be of class 'logical'.")
     }
     data
   },

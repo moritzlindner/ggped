@@ -54,25 +54,29 @@ appear under the parents of the anchored spouse.
 \value{
 A \code{data.frame} containing pedigree drawing coordinates and data with the following columns:
 \describe{
-  \item{ID}{The numeric id of each subject. }
-  \item{Name}{The name of each subject. }
-  \item{family}{The numeric id of each family. }
-  \item{mate.id}{The numeric id of each mateing.}
-  \item{mate.type}{1 = subject plotted to the immediate right is a spouse, 2= subject plotted to the immediate right is an inbred spouse, 0 = not a spouse. }
-  \item{twin.id}{The numeric id of each twin pair}
-  \item{twin.type}{1 = subject plotted to the immediate right is a dicygous twin, 2 = subject plotted to the immediate right is a monocygous twin}
-  \item{dad.id,mom.id}{Identification variable for father and mother. Founders' parents should be coded to NA.}
-  \item{sex}{Gender of individual noted in ‘id’. Either character ("male","female","Male","Female","M","F") or numeric (1="male", 2="female") data is understood by downstream function \link{ggdraw.pedigree}.}
-  \item{status}{0=alive/missing, 1=dead, 2=stillbirth, 3=miscarriage.}
-  \item{x,y}{Drawing coordinates of each subject.}
-  \item{mate.centerpoint, family.centerpoint, twin.centerpoint}{Centerpoints for mating, offsprings, and twins, resp., for drawing the tree.}
-  \item{kinship}{kinship between mating individuals as calculated by the \link[kinship2]{kinship} function.}
+  \item{ID}{The numeric ID of each subject.}
+  \item{Name}{The name of each subject.}
+  \item{family}{The numeric ID of each family.}
+  \item{mate.id}{The numeric ID of each mating.}
+  \item{mate.helper}{Numeric. Information about the mating.}
+  \item{mate.type}{Factor. 1 = subject plotted to the immediate right is a spouse, 2 = subject plotted to the immediate right is an inbred spouse, 0 = not a spouse.}
+  \item{twin.id}{The numeric ID of each twin pair.}
+  \item{twin.type}{Numeric. Information about the twin pair.}
+  \item{dad.id, mom.id}{Identification variables for father and mother. Founders' parents should be coded as NA.}
+  \item{sex}{Gender of the individual noted in 'id'. Either character ("male","female","Male","Female","M","F") or numeric (1="male", 2="female") data is understood by downstream function \code{\link{ggdraw.pedigree}}.}
+  \item{status}{Numeric. Life status: 0=alive/missing, 1=dead, 2=stillbirth, 3=miscarriage.}
+  \item{x, y}{Drawing coordinates of each subject.}
+  \item{mate.centerpoint, family.centerpoint, twin.centerpoint}{Centerpoints for mating, offspring, and twins, respectively, for drawing the tree.}
+  \item{kinship}{Numeric. Kinship between mating individuals as calculated by the \code{\link{kinship}} function.}
   \item{...}{Further columns of type logical, containing affected indicators.}
 }
 Each row represents one subject
 }
 \description{
-This function calculates pedigree drawing coordinates (using the \link[kinship2]{align.pedigree} function) and joins them with the pedigree data. This can be helpful e.g. for plotting data with \link{ggplot2} in general and the \link{ggdraw.pedigree} function in particular.
+Calculate pedigree drawing coordinates and join them with pedigree data.
+}
+\details{
+This function calculates pedigree drawing coordinates using the \code{\link[kinship2]{align.pedigree}} function and combines them with the provided pedigree data. The resulting data frame can be used to plot pedigrees with \code{\link{ggplot2}} or specific pedigree plotting functions like \code{\link{ggdraw.pedigree}}.
 }
 \examples{
 data(minnbreast)
