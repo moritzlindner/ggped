@@ -278,7 +278,7 @@ ggdraw.pedigree <- function(dat = NULL,
                                  is.na(dat$twin.id), ],
                     aes(group = family, y = y + 0.25),
                     colour = col.tree) +
-    geom_segment(data = dat[#!(dat$twin.id %in% dat$twin.id[dat$kinship > 0]) &
+    geom_segment(data = dat[is.na(dat$twin.id) &
                               !is.na(dat$family), ],
                  aes(
                    group = family,
@@ -309,7 +309,7 @@ ggdraw.pedigree <- function(dat = NULL,
       hjust = "outward",
       size = text.size / ggplot2:::.pt
     )
-    voffset <- -(shape.size * 1.5 / min(dat$y)) + text.size / ggplot2:::.pt * 1.02
+    voffset <- -(shape.size * 1.5 / min(dat$y)) + text.size / ggplot2:::.pt * 1.01
   }
   # draw character features
   for (i in features.as.lables) {
@@ -322,7 +322,7 @@ ggdraw.pedigree <- function(dat = NULL,
     ) +
       scale_colour_manual(values = col.lables, guide = FALSE)
     
-    voffset <- voffset + text.size / ggplot2:::.pt * 1.02
+    voffset <- voffset + text.size / ggplot2:::.pt * 1.01
   }
   # formatting
   plt <- plt +
