@@ -4,6 +4,7 @@
 #' @param ... Additional parameters passed on to \link[ggplot2]{discrete_scale}.
 #' @inheritParams ggplot2::scale_shape_manual
 #' @param na.value What aesthetic value should the missing values be displayed as?
+#' @param value For scale_feature.name_manual: The fill colours for the features. 
 #' @param set  A palette name from the lists in \link[RColorBrewer]{brewer.pal}.
 #' @param main.feature.black Should the main (first) feature always be displayed as black?
 #' @param name Legend title.
@@ -40,6 +41,33 @@ scale_feature.name_discrete<-function(...,
 #' @describeIn Scales Alias for \code{scale_feature.name_discrete}.
 #' @export
 scale_feature.name<-scale_feature.name_discrete
+
+#' @describeIn Scales Manual scale constructor for the \var{feature.name} argument.
+#' @importFrom ggplot2 discrete_scale
+#' @importFrom RColorBrewer brewer.pal
+#' @export
+scale_feature.name_manual<-function(...,
+                                    values = NULL,
+                                    na.value = "grey50",
+                                    main.feature.black=TRUE,
+                                    name="Features") {
+  discrete_scale(
+    aesthetics = "feature.name",
+    scale_name = "feature.name_d",
+    palette = function(x){
+      palette<-values
+      if(main.feature.black){
+        palette<-c("#000000",palette[-1])
+      }else{
+        palette
+      }
+    },
+    name=name,
+    drop=F,
+    na.value = na.value,
+    ...
+  )
+}
 
 #' @describeIn Scales Scale constructor for the \var{sex} argument.
 #' @importFrom ggplot2 discrete_scale

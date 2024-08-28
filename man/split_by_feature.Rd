@@ -16,3 +16,9 @@ split_by_feature(vector, features, factor)
 \description{
 Helper function to split coordinate vector for Pedigree Point generation.
 }
+\examples{
+\dontrun{
+split_by_feature(sin(range),unique(data$feature.name),7)
+}
+}
+\keyword{internal}

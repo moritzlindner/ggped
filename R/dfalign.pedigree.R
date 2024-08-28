@@ -7,6 +7,7 @@
 #' @inheritParams kinship2::align.pedigree
 #' @inheritParams kinship2::kinship
 #' @importFrom kinship2 align.pedigree
+#' @importFrom cli cli_abort cli_alert_info
 #' @return A \code{data.frame} containing pedigree drawing coordinates and data with the following columns:
 #' \describe{
 #'   \item{ID}{The numeric ID of each subject.}
@@ -41,25 +42,44 @@ dfalign.pedigree <-
            align = TRUE,
            hints = ped$hints) {
     
-    if (!(class(ped) %in% c("pedigree"))) {
-      stop("Input 'ped' must be of class 'pedigree'.")
+    if (!requireNamespace("kinship2", quietly = TRUE)) {
+      cli::cli_abort("The 'kinship2' package is required but not installed. Please install it using: install.packages('kinship2')")
     }
     
-    # ... (other parameter validation checks can be added based on the requirements)
+    # Validate 'ped' parameter
+    if (!(class(ped) %in% c("pedigree"))) {
+      cli::cli_abort("Input 'ped' must be of class 'pedigree'. Provided class: {.val {class(ped)}}")
+    }
+    
+    # Validate 'chrtype' parameter
+    if (!is.character(chrtype) || !chrtype %in% c("autosome", "x", "y", "mt")) {
+      cli::cli_abort("Parameter 'chrtype' must be one of 'autosome', 'x', 'y', or 'mt'. Provided value: {.val {chrtype}}")
+    }
+    
+    # Validate 'packed' parameter
+    if (!is.logical(packed)) {
+      cli::cli_abort("Parameter 'packed' must be a logical value (TRUE or FALSE). Provided type: {.val {class(packed)}}")
+    }
+    
+    # Validate 'width' parameter
+    if (!is.numeric(width) || width <= 0) {
+      cli::cli_abort("Parameter 'width' must be a positive numeric value. Provided value: {.val {width}} of type {.val {class(width)}}")
+    }
+    
+    # Validate 'align' parameter
+    if (!is.logical(align)) {
+      cli::cli_abort("Parameter 'align' must be a logical value (TRUE or FALSE). Provided type: {.val {class(align)}}")
+    }
+    
+    # Validate 'hints' parameter
+    if (!is.null(hints) && !is.list(hints)) {
+      cli::cli_abort("Parameter 'hints' must be a list or NULL. Provided type: {.val {class(hints)}}")
+    }
     
     # Check if 'ped' has at least one entry
     if (nrow(as.data.frame(ped)) < 1) {
-      stop("Input 'ped' must have at least one entry.")
+      cli::cli_abort("Input 'ped' must have at least one entry. The provided pedigree has {.val {nrow(as.data.frame(ped))}} entries.")
     }
-    
-    # Validate 'packed', 'width', 'align' parameters if required
-    
-    # Ensure required packages are loaded
-    if (!requireNamespace("kinship2", quietly = TRUE)) {
-      stop("The 'kinship2' package is required but not installed. Please install it using: install.packages('kinship2')")
-    }
-    
-    # ... (other package checks can be added based on the requirements)
     
     struct <-
       align.pedigree(
@@ -72,12 +92,12 @@ dfalign.pedigree <-
     
     ckall <-
       ped$id[is.na(match(ped$id, ped$id[struct$nid[struct$nid != 0]]))]
-    if (length(ckall > 0))
-      message(
-        "Did not include the following subject(s):",
-        paste("\n", ckall),
-        "\n Reason: No evidence for relation to other subjects in the tree.\n"
+    if (length(ckall > 0)) {
+      cli::cli_alert_info(
+        "Did not include the following subject(s): {.val {paste(ckall, collapse = ', ')}}. Reason: No evidence for relation to other subjects in the tree."
       )
+    }
+    
     nvalid <-
       length(struct$nid[struct$nid != 0])
     out <- data.frame(
@@ -259,6 +279,7 @@ dfalign.pedigree <-
     
     #print(out$ID!=0 & out$family!=0 & out$mate.id!=0)
     out$family[out$family == 0] <- NA
+    out$twin.type<-as.factor(out$twin.type)
     out
     
   }

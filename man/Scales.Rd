@@ -4,6 +4,7 @@
 \alias{Scales}
 \alias{scale_feature.name_discrete}
 \alias{scale_feature.name}
+\alias{scale_feature.name_manual}
 \alias{scale_sex_discrete}
 \alias{scale_sex}
 \alias{scale_isdead_discrete}
@@ -21,6 +22,14 @@ scale_feature.name_discrete(
 scale_feature.name(
   ...,
   set = "Set2",
+  na.value = "grey50",
+  main.feature.black = TRUE,
+  name = "Features"
+)
+
+scale_feature.name_manual(
+  ...,
+  values = NULL,
   na.value = "grey50",
   main.feature.black = TRUE,
   name = "Features"
@@ -79,22 +88,26 @@ match will be given \code{na.value}.}
 \item A function that takes the limits as input and returns breaks
 as output
 }}
+
+\item{value}{For scale_feature.name_manual: The fill colours for the features.}
 }
 \description{
 Discrete scale constructors for \link{geom_pedigreepoint}
 }
 \section{Functions}{
 \itemize{
-\item \code{scale_feature.name_discrete}: Scale constructor for the \var{feature.name} argument.
+\item \code{scale_feature.name_discrete()}: Scale constructor for the \var{feature.name} argument.
 
-\item \code{scale_feature.name}: Alias for \code{scale_feature.name_discrete}.
+\item \code{scale_feature.name()}: Alias for \code{scale_feature.name_discrete}.
 
-\item \code{scale_sex_discrete}: Scale constructor for the \var{sex} argument.
+\item \code{scale_feature.name_manual()}: Manual scale constructor for the \var{feature.name} argument.
 
-\item \code{scale_sex}: Alias for \code{scale_sex_discrete}.
+\item \code{scale_sex_discrete()}: Scale constructor for the \var{sex} argument.
 
-\item \code{scale_isdead_discrete}: Scale constructor for the \var{isdead} argument.
+\item \code{scale_sex()}: Alias for \code{scale_sex_discrete}.
 
-\item \code{scale_isdead}: Alias for \code{scale_isdead_discrete}.
+\item \code{scale_isdead_discrete()}: Scale constructor for the \var{isdead} argument.
+
+\item \code{scale_isdead()}: Alias for \code{scale_isdead_discrete}.
+
 }}
-

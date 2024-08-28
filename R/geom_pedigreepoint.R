@@ -330,7 +330,7 @@ GeomPedigreePoint <- ggproto(
   }
 )
 
-#' @describeIn geom_pedigreepoint
+#' @describeIn geom_pedigreepoint geom_pedigreepoint
 #' @param na.colour \strong{Colour to fill symbols with if feature is \code{NA}}.
 #' @param size \strong{Symbol size}.
 #' @importFrom ggplot2 layer

@@ -5,11 +5,11 @@
 #' @param vector A vector containing data for drawing GeomPedigreePoint.
 #' @param features Character vector of feature names used to split the vector.
 #' @param factor A scale factor (i.e. desired point size)
-#' @example 
+#' @examples 
 #' \dontrun{
 #' split_by_feature(sin(range),unique(data$feature.name),7)
 #' }
-#' @keyword Internal
+#' @keywords internal
 split_by_feature<-function(vector,
                            features,
                            factor){

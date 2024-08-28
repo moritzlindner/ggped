@@ -69,72 +69,61 @@ ggdraw.pedigree <- function(dat = NULL,
                             width = 10,
                             ...)
 {
+  
+  if (is.null(dat)) {
+    cli::cli_abort("Input data 'dat' cannot be NULL.")
+  }
+  
+  if (nrow(dat) < 2) {
+    cli::cli_abort("The pedigree must contain at least two individuals for meaningful plotting.")
+  }
+  
+  if (is.null(features)) {
+    cli::cli_abort("'features' cannot be NULL. Please specify at least one feature.")
+  }
+  
+  
   if (class(dat) == "pedigree") {
-    dat <-
-      dfalign.pedigree(
-        ped,
-        chrtype = chrtype,
-        packed = packed,
-        align = align,
-        width = width
-      )
-  } else{
-    if (class(dat) != "data.frame") {
-      stop("dat has to be eihter of class data.frame or pedigree.")
+    dat <- dfalign.pedigree(
+      ped = dat,
+      chrtype = chrtype,
+      packed = packed,
+      align = align,
+      width = width
+    )
+  } else {
+    if (!("data.frame" %in% class(dat))) {
+      cli::cli_abort("'dat' has to be either of class 'data.frame' or 'pedigree'. Provided class: {.val {class(dat)}}")
     }
   }
   
   if (length(unique(names(column.names))) != length(names(column.names))) {
-    stop("Column names provided are not unique.")
+    cli::cli_abort("Column names provided are not unique. Duplicate names found: {.val {names(column.names)[duplicated(names(column.names))]}}")
   }
   
   if (length(unique(features)) != length(features)) {
-    stop("Feature column names must be unique.")
+    cli::cli_abort("Feature column names must be unique. Duplicate features found: {.val {features[duplicated(features)]}}")
   }
   
   for (i in features) {
     if (is.character(dat[, i])) {
       if (length(unique(dat[!(is.na(dat[, i])), i])) < 3) {
         dat[, i] <- dat[, i] == dat[1, i]
-        warning(
-          paste0(
-            "Feature ",
-            i,
-            " automatically converted into logical by setting ",
-            dat[1, i],
-            " as TRUE. "
-          )
-        )
+        cli::cli_warn("Feature '{.val {i}}' automatically converted into logical by setting '{.val {dat[1, i]}}' as TRUE.")
       }
     }
     if (is.numeric(dat[, i])) {
       if (length(unique(dat[!(is.na(dat[, i])), i])) < 3) {
         dat[, i] <- dat[, i] == max(dat[, i])
-        warning(
-          paste0(
-            "Feature ",
-            i,
-            " automatically converted into logical by setting ",
-            max(dat[, i]),
-            " as TRUE. "
-          )
-        )
+        cli::cli_warn("Feature '{.val {i}}' automatically converted into logical by setting max value '{.val {max(dat[, i])}}' as TRUE.")
       }
     }
   }
   
-  tolabel <-
-    as.vector(unlist(apply(dat[features.as.lables], 2, unique)))
+  tolabel <- as.vector(unlist(apply(dat[features.as.lables], 2, unique)))
   if (!all(tolabel %in% names(col.lables))) {
-    whichmissing <-
-      logical(length = length(tolabel))
-    for (i in 1:length(whichmissing)) {
-      whichmissing[i] <- !(tolabel[i] %in% names(col.lables))
-    }
-    stop(
-      "the following features selected in 'features.as.lables' have no colour assigned in 'col.labels': ",
-      paste(tolabel[whichmissing], ", ")
-    )
+    whichmissing <- tolabel[!tolabel %in% names(col.lables)]
+    cli::cli_abort("The following features selected in 'features.as.lables' have no colour assigned in 'col.labels': {.val {paste(whichmissing, collapse = ', ')}}")
   }
   
   for (i in names(column.names)) {
@@ -172,14 +161,15 @@ ggdraw.pedigree <- function(dat = NULL,
     # FIXME mating with multiple partners whereof some are related does not print labels accurately
     plt <-
       plt + geom_line(data = dat[(dat$mate.id %in% dat$mate.id[dat$kinship > 0]) &
-                                   !is.na(dat$mate.id),],
+                                   !is.na(dat$mate.id) & !is.na(dat$mate.id),],
                       aes(group = mate.id, y = y + 0.02),
                       colour = col.tree)
     if (plot.kinship.label) {
       plt <-
         plt + geom_text(
           data = dat[(dat$mate.id %in% dat$mate.id[dat$kinship > 0]) &
-                       !is.na(dat$mate.id),],
+                       !is.na(dat$mate.id) & 
+                       !is.na(dat$mate.centerpoint),],
           aes(
             label = paste0("Kinship:\n", as.character(kinship)),
             x = mate.centerpoint
@@ -203,7 +193,7 @@ ggdraw.pedigree <- function(dat = NULL,
   }
   plt <- plt +
     geom_segment(
-      data = dat[!is.na(dat$mate.id),],
+      data = dat[!is.na(dat$mate.id) & !is.na(dat$mate.centerpoint),],
       aes(
         group = mate.id,
         x = mate.centerpoint,
@@ -213,7 +203,7 @@ ggdraw.pedigree <- function(dat = NULL,
       colour = col.tree
     ) + #top part of descending
     geom_segment(
-      data = dat[!is.na(dat$mate.id),],
+      data = dat[!is.na(dat$mate.id) & !is.na(dat$mate.centerpoint),],
       aes(
         group = mate.id,
         x = mate.centerpoint,
@@ -245,19 +235,19 @@ ggdraw.pedigree <- function(dat = NULL,
                        }
                      }
                    }))
-    
     plt <-
       plt + geom_line(
-        data = dat[dat$family %in% dat$family[!is.na(dat$twin.id)], ],
+        data = dat[dat$family %in% dat$family[!is.na(dat$twin.id) & !is.na(dat$twin.id)], ],
         aes(
           group = family,
           y = y + 0.25,
           x = xfambarcoord
         ),
         colour = col.tree
-      ) +
-      geom_segment(
-        data = dat[!is.na(dat$twin.id), ],
+      )
+    plt <-
+      plt + geom_segment(
+        data = dat[dat$family %in% dat$family[!is.na(dat$twin.id)] & !is.na(dat$twin.id), ],
         aes(
           group = family,
           xend = twin.centerpoint,
@@ -265,18 +255,29 @@ ggdraw.pedigree <- function(dat = NULL,
           yend = y + 0.25
         ),
         colour = col.tree
-      ) +
-      geom_line(data = dat[dat$twin.type == 2, ],
-                aes(group = twin.id),
-                colour = col.tree)
+      )
     
+    plt <-
+      plt + geom_segment(
+        data = dat[dat$family %in% dat$family[!is.na(dat$twin.id)] &
+                     !is.na(dat$twin.type), ],
+        aes(
+          group = twin.id,
+          linetype = twin.type,
+          y = y + 0.125,
+          yend = y + 0.125,
+          x = twin.centerpoint + 0.25,
+          xend = twin.centerpoint - 0.25
+        ),
+        colour = col.tree
+      )
   }
   
   ## all non-twins
   plt <-
     plt + geom_line(data = dat[!is.na(dat$family) &
                                  is.na(dat$twin.id), ],
-                    aes(group = family, y = y + 0.25),
+                    aes(group = family, y = y + 0.25, x = x),
                     colour = col.tree) +
     geom_segment(data = dat[is.na(dat$twin.id) &
                               !is.na(dat$family), ],
@@ -286,7 +287,6 @@ ggdraw.pedigree <- function(dat = NULL,
                    yend = y + 0.25
                  ),
                  colour = col.tree) #descending for siblings
-  
   # individuals
   plt <-
     plt + geom_pedigreepoint(
@@ -327,6 +327,8 @@ ggdraw.pedigree <- function(dat = NULL,
   # formatting
   plt <- plt +
     theme_void() +
+    labs(linetype="Twin Zycocity")+
+    scale_linetype_manual(labels = c("Monozygotic", "Dizygotic", "Unknown"), values = c(1, 2, 3)) +
     theme(legend.position = "bottom", legend.box = "vertical")
   plt
 }
