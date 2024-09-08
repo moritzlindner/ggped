@@ -13,6 +13,7 @@
 #' @param col.lables Font colour for subject labels. Per default, sets *wt* to black, *het* to first colour of palette and *hom* to the second colour of the palette. Accepts any arguments that is understood by the parameter *values* of \link[ggplot2]{scale_colour_manual}.
 #' @param col.tree Line colour for tree.
 #' @param col.double Line colour for lines between repeatedly plotted subjects.
+#' @param allow.repeated Allow drawing pedigress where subjects need to appear multiple times. This currently usually results in faulty pedigrees.  
 #' @inheritParams kinship2::kinship
 #' @importFrom RColorBrewer brewer.pal
 #' @import ggplot2
@@ -67,19 +68,20 @@ ggdraw.pedigree <- function(dat = NULL,
                             packed = TRUE,
                             align = TRUE,
                             width = 10,
+                            allow.repeated = F,
                             ...)
 {
   
   if (is.null(dat)) {
-    cli::cli_abort("Input data 'dat' cannot be NULL.")
+    cli_abort("Input data 'dat' cannot be NULL.")
   }
   
   if (nrow(dat) < 2) {
-    cli::cli_abort("The pedigree must contain at least two individuals for meaningful plotting.")
+    cli_abort("The pedigree must contain at least two individuals for meaningful plotting.")
   }
   
   if (is.null(features)) {
-    cli::cli_abort("'features' cannot be NULL. Please specify at least one feature.")
+    cli_abort("'features' cannot be NULL. Please specify at least one feature.")
   }
   
   
@@ -93,29 +95,29 @@ ggdraw.pedigree <- function(dat = NULL,
     )
   } else {
     if (!("data.frame" %in% class(dat))) {
-      cli::cli_abort("'dat' has to be either of class 'data.frame' or 'pedigree'. Provided class: {.val {class(dat)}}")
+      cli_abort("'dat' has to be either of class 'data.frame' or 'pedigree'. Provided class: {.val {class(dat)}}")
     }
   }
   
   if (length(unique(names(column.names))) != length(names(column.names))) {
-    cli::cli_abort("Column names provided are not unique. Duplicate names found: {.val {names(column.names)[duplicated(names(column.names))]}}")
+    cli_abort("Column names provided are not unique. Duplicate names found: {.val {names(column.names)[duplicated(names(column.names))]}}")
   }
   
   if (length(unique(features)) != length(features)) {
-    cli::cli_abort("Feature column names must be unique. Duplicate features found: {.val {features[duplicated(features)]}}")
+    cli_abort("Feature column names must be unique. Duplicate features found: {.val {features[duplicated(features)]}}")
   }
   
   for (i in features) {
     if (is.character(dat[, i])) {
       if (length(unique(dat[!(is.na(dat[, i])), i])) < 3) {
         dat[, i] <- dat[, i] == dat[1, i]
-        cli::cli_warn("Feature '{.val {i}}' automatically converted into logical by setting '{.val {dat[1, i]}}' as TRUE.")
+        cli_warn("Feature '{.val {i}}' automatically converted into logical by setting '{.val {dat[1, i]}}' as TRUE.")
       }
     }
     if (is.numeric(dat[, i])) {
       if (length(unique(dat[!(is.na(dat[, i])), i])) < 3) {
         dat[, i] <- dat[, i] == max(dat[, i])
-        cli::cli_warn("Feature '{.val {i}}' automatically converted into logical by setting max value '{.val {max(dat[, i])}}' as TRUE.")
+        cli_warn("Feature '{.val {i}}' automatically converted into logical by setting max value '{.val {max(dat[, i])}}' as TRUE.")
       }
     }
   }
@@ -123,7 +125,7 @@ ggdraw.pedigree <- function(dat = NULL,
   tolabel <- as.vector(unlist(apply(dat[features.as.lables], 2, unique)))
   if (!all(tolabel %in% names(col.lables))) {
     whichmissing <- tolabel[!tolabel %in% names(col.lables)]
-    cli::cli_abort("The following features selected in 'features.as.lables' have no colour assigned in 'col.labels': {.val {paste(whichmissing, collapse = ', ')}}")
+    cli_abort("The following features selected in 'features.as.lables' have no colour assigned in 'col.labels': {.val {paste(whichmissing, collapse = ', ')}}")
   }
   
   for (i in names(column.names)) {
@@ -182,6 +184,12 @@ ggdraw.pedigree <- function(dat = NULL,
   
   # tree - descending parts and repeated subjects
   if (length(dat$Name) != length(unique(dat$Name))) {
+    if (allow.repeated) {
+      cli_warn("Drawing individual subjects multiple times is currently not supported.")
+    }
+    else {
+      cli_abort("Drawing individual subjects multiple times is currently not supported. Set 'allow.repeated' to TRUE, to attempt drawing anyhow.")
+    }
     #connect repeated subjects
     plt <- plt +
       geom_line(

@@ -25,6 +25,7 @@ ggdraw.pedigree(
   packed = TRUE,
   align = TRUE,
   width = 10,
+  allow.repeated = F,
   ...
 )
 }
@@ -66,6 +67,8 @@ parents to children in order to have a smaller overall width for the plot.
 \item{width}{
 for a packed output, the minimum width
 }
+
+\item{allow.repeated}{Allow drawing pedigress where subjects need to appear multiple times. This currently usually results in faulty pedigrees.}
 
 \item{...}{Further arguments passed to \link{geom_pedigreepoint}.}
 }
